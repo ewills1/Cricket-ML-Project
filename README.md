@@ -4,7 +4,7 @@ This project also includes a Flask-API based backend, and a React frontend.
 
 The Flask backend provides a web server endpoint that serves the latest model predictions. These can be updated by adding a new set of matches into the /data directory, and updating the **json_dir** in main before running.
 
-The React frontend uses a GET call to recieve the latest model predictions and display them as a clear table on a webpage. 
+The React frontend uses a GET call to recieve the latest model predictions and display both a clear table of the predictions, and a plot of the predicted scores against the actual scores. 
 
 
 Why Random Forest Regressor?
