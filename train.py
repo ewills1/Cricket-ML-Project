@@ -14,6 +14,7 @@ class TrainModel:
     def __init__(self, csv_dir):
         self.csv_dir = csv_dir
         self.all_data = []
+        self.predictions = []
 
     def train_model(self):
         # Load CSV file
@@ -52,6 +53,10 @@ class TrainModel:
 
         # Save the DataFrame to a CSV file
         predictions.to_csv('./csv/final_score_predictions.csv', index=False)
+        self.predictions = predictions
+
+    def get_predictions(self):
+        return self.predictions
 
     def plot_results(self):
         # Load predictions

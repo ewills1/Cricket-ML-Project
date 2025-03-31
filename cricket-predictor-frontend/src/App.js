@@ -1,66 +1,45 @@
-import React, { useState } from 'react';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 
-function App() {
-  const [file, setFile] = useState(null);
-  const [prediction, setPrediction] = useState(null);
-  const [loading, setLoading] = useState(false);
+const App = () => {
+  const [data, setData] = useState([]);
 
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (!file) {
-      alert("Please select a file");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    setLoading(true);
-
-    try {
-      // Send the file to the Flask API for prediction
-      const response = await fetch('http://127.0.0.1:5000/predict-file', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const data = await response.json();
-      setLoading(false);
-
-      // If prediction exists, display it, otherwise show error
-      if (data.predicted_final_score) {
-        setPrediction(data.predicted_final_score);
-      } else {
-        alert("Error: " + data.error);
-      }
-    } catch (error) {
-      setLoading(false);
-      alert("An error occurred while sending the request: " + error);
-    }
-  };
+  useEffect(() => {
+    axios.get("http://127.0.0.1:5000/api/predictions")
+      .then(res => {
+        setData(res.data);
+        console.log("Data fetched successfully:", res.data);
+      })
+      .catch(err => console.error("Error fetching data:", err));
+  }, []);
 
   return (
-    <div className="App">
-      <h1>Cricket Score Predictor</h1>
-      <form onSubmit={handleSubmit}>
-        <input type="file" onChange={handleFileChange} />
-        <button type="submit" disabled={loading}>
-          {loading ? "Predicting..." : "Submit File"}
-        </button>
-      </form>
-      
-      {prediction !== null && (
-        <div>
-          <h2>Predicted Final Score: {prediction}</h2>
-        </div>
-      )}
-    </div>
+    <TableContainer component={Paper} sx={{ maxWidth: 800, margin: "auto", mt: 4 }}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell><strong>Team</strong></TableCell>
+            <TableCell><strong>Opponent</strong></TableCell>
+            <TableCell><strong>Over</strong></TableCell>
+            <TableCell><strong>Actual Final Score</strong></TableCell>
+            <TableCell><strong>Predicted Final Score</strong></TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data.map((item, index) => (
+            <TableRow key={index}>
+              <TableCell>{item.Team}</TableCell>
+              <TableCell>{item.Opponent}</TableCell>
+              <TableCell>{item.Over}</TableCell>
+              <TableCell>{item["Actual Final Score"]}</TableCell>
+              <TableCell>{item["Predicted Final Score"].toFixed(2)}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
-}
+};
 
 export default App;

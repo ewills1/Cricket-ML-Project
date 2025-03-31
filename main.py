@@ -13,7 +13,7 @@ def main(json_dir, csv_dir):
 
 if __name__ == "__main__":
     # Directories for JSON and CSV files
-    json_dir = "./data/ipl" 
-    csv_dir = "./csv/" 
+    json_dir = "../data/ipl" 
+    csv_dir = "../csv/" 
 
     main(json_dir, csv_dir)
