@@ -1,44 +1,30 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import { AppBar, Tabs, Tab, Box, Typography } from "@mui/material";
+import PredictionsTable from "./PredictionsTable";
+import PlotTab from "./PlotTab";
 
 const App = () => {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    axios.get("http://127.0.0.1:5000/api/predictions")
-      .then(res => {
-        setData(res.data);
-        console.log("Data fetched successfully:", res.data);
-      })
-      .catch(err => console.error("Error fetching data:", err));
-  }, []);
+  const [tabIndex, setTabIndex] = useState(0);
 
   return (
-    <TableContainer component={Paper} sx={{ maxWidth: 800, margin: "auto", mt: 4 }}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell><strong>Team</strong></TableCell>
-            <TableCell><strong>Opponent</strong></TableCell>
-            <TableCell><strong>Over</strong></TableCell>
-            <TableCell><strong>Actual Final Score</strong></TableCell>
-            <TableCell><strong>Predicted Final Score</strong></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((item, index) => (
-            <TableRow key={index}>
-              <TableCell>{item.Team}</TableCell>
-              <TableCell>{item.Opponent}</TableCell>
-              <TableCell>{item.Over}</TableCell>
-              <TableCell>{item["Actual Final Score"]}</TableCell>
-              <TableCell>{item["Predicted Final Score"].toFixed(2)}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Box sx={{ width: "100%", textAlign: "center", mt: 4 }}>
+      <Typography variant="h4" gutterBottom>
+        ML Cricket Predictor
+      </Typography>
+
+      <AppBar position="static">
+        <Tabs value={tabIndex} onChange={(e, newIndex) => setTabIndex(newIndex)}>
+          <Tab label="Predictions Table" />
+          <Tab label="Prediction Plot" />
+        </Tabs>
+      </AppBar>
+
+      <Box sx={{ mt: 3 }}>
+        {tabIndex === 0 && <PredictionsTable />}
+        {tabIndex === 1 && <PlotTab />}
+      </Box>
+    </Box>
   );
 };
 

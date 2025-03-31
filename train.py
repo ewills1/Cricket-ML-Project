@@ -71,6 +71,8 @@ class TrainModel:
         plt.ylabel("Predicted Final Score")
         plt.title("Actual vs Predicted Final Score")
         plt.grid(True)
+        plt.savefig("./app/static/prediction_plot.png", dpi=300, bbox_inches="tight")
+        plt.close()
 
 
 
