@@ -1,3 +1,0 @@
-FROM
-
-WORKDIR /app
