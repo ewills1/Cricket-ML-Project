@@ -1,5 +1,5 @@
-from train import TrainModel
-from parse_json import ParseJson
+from app.train import TrainModel
+from app.parse_json import ParseJson
 
 def main(json_dir, csv_dir):
     # Parse JSON files and save to CSV

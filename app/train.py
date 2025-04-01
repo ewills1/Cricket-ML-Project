@@ -1,15 +1,3 @@
-import pandas as pd
-from sklearn.model_selection import RandomizedSearchCV, train_test_split
-from sklearn.ensemble import RandomForestRegressor as rf
-from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import mean_squared_error
-import matplotlib.pyplot as plt
-import seaborn as sns
-import joblib 
-import os
-
-import numpy as np
-
 import os
 import numpy as np
 import pandas as pd
@@ -17,6 +5,9 @@ import joblib
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.metrics import mean_squared_error
+from xgboost import XGBRegressor
+from matplotlib import pyplot as plt
+import seaborn as sns
 
 class TrainModel:
     def __init__(self, csv_dir):
@@ -26,7 +17,7 @@ class TrainModel:
         self.X = None  # Initialize as None
         self.y = None
         self.df = None
-        self.model = RandomForestRegressor(n_estimators=100, random_state=42)  # Fix rf issue
+        self.model = XGBRegressor(n_estimators=100, learning_rate=0.1, max_depth=5, random_state=42)
 
     def preprocess_data(self):
         """ Load and preprocess data """
@@ -66,14 +57,11 @@ class TrainModel:
         # Split data into training and testing sets
         X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, test_size=0.2, random_state=42)
 
-        best_params = self.tune_hyperparameters()
-        print(f"Training with Best Parameters: {best_params}")
-
         self.model.fit(X_train, y_train)
 
         # Save the model for Flask API
-        joblib.dump(self.model, "cricket_score_model.pkl")
-        print("Model saved as cricket_score_model.pkl")
+        joblib.dump(self.model, "cricket_score_model_xgb.pkl")
+        print("Model saved as cricket_score_model_xgb.pkl")
 
         # Predict on test set
         y_pred = self.model.predict(X_test)
