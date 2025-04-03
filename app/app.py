@@ -5,7 +5,6 @@ import pandas as pd
 from flask_cors import CORS
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))  # Add root directory
-from main import main # Importing the main function from main.py
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes

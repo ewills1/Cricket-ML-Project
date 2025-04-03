@@ -64,7 +64,7 @@ class ParseJson:
                                 'phase': phase,
                                 'cumulative_runs': cumulative_runs,
                                 'cumulative_wickets': cumulative_wickets,
-                                'current_run_rate': cumulative_runs / (over_number + 1 + 1e-6),
+                                'current_run_rate': cumulative_runs / (over_number + 1 + 1e-6), # Small constant added to prevent division by zero
                                 'remaining_overs': remaining_overs,
                                 'remaining_wickets': remaining_wickets,
                                 'final_score': final_score
